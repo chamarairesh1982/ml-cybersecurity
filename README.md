@@ -1,26 +1,22 @@
-# COMP70049-Assignment_2026
+# ml-cybersecurity
 
-[Open in Google Colab](https://colab.research.google.com/github/chamarairesh1982/COMP70049-Assignment_2026/blob/main/COMP70049-Assignment_2026.ipynb)
+Independent machine learning experiments for cybersecurity, one scenario at a time. Dataset and model choices follow the problem and evidence. No personal details, school identifiers, lecture files, datasets, or measured results are included.
 
-Independent learning project about machine learning for cybersecurity. No personal details, lecture materials, datasets, or measured results are included.
+[Open in Google Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/ml-cybersecurity.ipynb)
 
-## Start here
+## How we work
 
-Open `COMP70049-Assignment_2026.ipynb` in Google Colab using **File → Upload notebook**, or use Colab's GitHub tab after this repository is published. The notebook is compatible with Python 3.
+Define the security decision; assess suitable data; audit labels and duplicates; design independent training, validation, and test partitions; establish a simple baseline; compare justified candidates; evaluate held-out performance and explain failures.
 
-Work through the sections in order:
+There is no fixed dataset or algorithm checklist. Choose additional complexity only when the data and measured benefit justify its cost. Fit learned preprocessing on training data only. Use validation data for configuration and threshold selection. Evaluate the final test once.
 
-1. Email phishing detection: executable classical and optional LSTM workflow; bring an authorised labelled CSV.
-2. Network intrusion classification: experiment design, implementation pending.
-3. Anomaly detection: experiment design, implementation pending.
-4. Ransomware behaviour screening: experiment design, implementation pending.
+## Scenario order
 
-Read `REPORT.md` for the report companion and `DATASET_SELECTION.md` before choosing data. No dataset is automatically downloaded. In Colab, upload your own CSV through the Files sidebar, set `DATA_PATH`, and run Section 1 in order. The CSV must contain `text` and numeric `label` (0 legitimate, 1 phishing); optional `group` identifiers keep related messages together. The workflow stops clearly if data are missing or invalid. Enable `RUN_LSTM` to train the optional deep learning comparator.
+1. Phishing email triage — current
+2. Network attack detection — planned
+3. Unusual activity detection — planned
+4. Ransomware behaviour screening — planned
 
-For local use: install `requirements.txt`, then open the notebook in Jupyter. TensorFlow is optional for the classical workflow. Plot and metric outputs appear only after training; no results are pre-populated. Do not commit executed notebook outputs or data.
+The notebook contains the roadmap and Scenario 1 design. We will add training code after selecting suitable data. REPORT.md is the experiment journal. build_notebook.py regenerates the output-free notebook.
 
-`build_notebook.py` regenerates the notebook and overwrites notebook edits, so edit the generator when maintaining its content.
-
-## Privacy
-
-The learning files omit names, contact information, and student identifiers. GitHub account ownership remains visible on a public repository. Use a generic Git author and GitHub's private/noreply email if committing locally. Inspect all files and clear notebook outputs before publishing changes.
+Project files contain no student number or contact details. Public GitHub account ownership remains visible. Commits use a generic project identity. Keep data and executed outputs local.
