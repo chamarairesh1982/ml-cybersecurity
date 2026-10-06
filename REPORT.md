@@ -1,41 +1,31 @@
-# ml-cybersecurity
+# Cybersecurity ML: evidence journal
 
-Independent machine learning experiments for cybersecurity, one scenario at a time. Dataset and model choices follow the problem and evidence. No personal details, school identifiers, lecture files, datasets, or measured results are included.
+## Section 1 — phishing email triage
 
-## How we work
+The notebook implements a complete learning experiment using the versioned public corpus in DATASET_SELECTION.md, loaded directly in Colab. The question is whether message text supports analyst triage while limiting false alerts. Real-data results are pending execution.
 
-Define the security decision; assess suitable data; audit labels and duplicates; design independent training, validation, and test partitions; establish a simple baseline; compare justified candidates; evaluate held-out performance and explain failures.
+### Preparation
 
-There is no fixed dataset or algorithm checklist. Choose additional complexity only when the data and measured benefit justify its cost. Fit learned preprocessing on training data only. Use validation data for configuration and threshold selection. Evaluate the final test once.
+Audit types, missing values, labels and lengths without displaying email bodies. Remove missing/empty/sentinel records, normalise text, exclude contradictory duplicates and deduplicate consistent copies. Report character truncation. Group template fingerprints and verified near-duplicate shingles before a fixed grouped split. Content groups are imperfect proxies for campaigns.
 
-## Scenario 1: experiment design
+Training-only EDA informs understanding. Fit vocabulary, TF-IDF and numerical scaling within training boundaries or CV folds. Compare word TF-IDF, word+character features and a stopword/stemming ablation. Structural features capture counts and character ratios.
 
-The unit of prediction is one email using information available when it arrives. Confirm that labels represent phishing rather than only spam. Define the analyst review budget before selecting a threshold.
+### Models and validation
 
-Before choosing data, assess provenance, collection period, label method, legitimate controls, licence, campaign/source grouping, privacy, and Colab memory needs. No dataset is selected yet.
+Compare prior, regularised logistic regression, linear SVM, structural logistic regression and random forest. Tune bounded grids on identical grouped training CV folds using average precision. SVM margins are ranking scores, not calibrated probabilities.
 
-Prefer independent time, campaign, or source holdouts. Inspect baseline errors before choosing candidate models. Report average precision, operating-point precision and recall, false-positive rate, confusion counts, false alerts per 1,000 legitimate messages, runtime, uncertainty, and performance under shift.
+The neural comparator learns embeddings and uses padding-aware average pooling and dense layers. It does not model word order. Use regularisation, dropout, class weights, validation early stopping and two fixed seeds. Vectorise strings on CPU before numerical GPU/TPU training.
 
-Current stage: problem definition and evaluation design. Dataset selection, model selection, training implementation, and measured conclusions are pending. Review the evidence from this scenario before moving on.
+Validation selects thresholds and the winner by recall under an illustrative 1% legitimate-message false-positive budget, then AP and fitting cost. This is an empirical budget, not a population guarantee. Do not refit on validation after choosing thresholds.
 
-## Scenario 2: Network attack detection
+### Final evidence
 
-Recognise suspicious network flows and distinguish attack categories when the available labels support that task.
+Evaluate the untouched test once. Record accuracy, precision, recall, F1, AP, ROC-AUC, FPR, false alerts per 1,000 legitimate messages, confusion counts and runtime. Plot PR/ROC curves and the winner's confusion matrix. Retain the validation-selected winner. Report group-bootstrap intervals and aggregate errors by length/class.
 
-Planned: begins after the previous scenario is reviewed. Data and models remain undecided.
+**Real-data outcomes: pending Colab execution.** Do not assume deep learning wins. Further development after examining test results needs a new independent holdout.
 
-## Scenario 3: Unusual activity detection
+Label quality, historical/source artefacts, approximate grouping, truncation and absent time/source metadata limit generalisation. Neural seed variation does not measure deployment shift. Independent data and operational monitoring would be required for practical use.
 
-Prioritise departures from normal behaviour when attack labels are incomplete.
+## Remaining scenarios
 
-Planned: begins after the previous scenario is reviewed. Data and models remain undecided.
-
-## Scenario 4: Ransomware behaviour screening
-
-Flag suspicious recorded process activity early and assess unfamiliar families or collection environments.
-
-Planned: begins after the previous scenario is reviewed. Data and models remain undecided.
-
-## Evidence journal
-
-Record provenance, licence, label limitations, audit exclusions, split independence, feature availability, model rationale, validation decisions, held-out metrics, figures, runtime, uncertainty, and errors. Conclusions must follow actual measurements.
+Sections 2 (intrusion), 3 (anomaly) and 4 (ransomware) each have a reserved notebook/folder. Implement one at a time after reviewing the preceding scenario. No implementation or results are claimed for them.
