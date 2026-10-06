@@ -1,0 +1,26 @@
+# Dataset and output files stay local.
+data/
+datasets/
+outputs/
+results/
+models/
+*.csv
+*.tsv
+*.parquet
+*.gzip
+*.zip
+*.npy
+*.npz
+*.h5
+*.keras
+*.pkl
+*.joblib
+*.pdf
+*.pptx
+*.docx
+.env*
+credentials*
+token*
+.ipynb_checkpoints/
+__pycache__/
+.venv/

@@ -1,0 +1,6 @@
+numpy
+pandas
+scikit-learn
+matplotlib
+# Optional: install tensorflow for RUN_LSTM=True.
+# Optional: install jupyter for local notebook use.
