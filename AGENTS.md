@@ -5,7 +5,7 @@ This is an independent learning project. Keep personal details, student numbers,
 ## Structure
 
 - Use four scenario folders, each with one self-contained Google Colab Jupyter notebook.
-- Implement only the currently active scenario. Section 1 is active; Sections 2–4 are placeholders until the user moves on.
+- Implement only the currently active scenario. Section 2 is active; Section 1 is implemented and Sections 3–4 remain placeholders until the user moves on.
 - Put all runnable Python inside notebook code cells. Do not create, commit or depend on standalone .py files or notebook generators.
 - Edit notebooks directly and preserve nbformat validity, stable cell IDs, a Python 3 kernelspec and clear teaching markdown.
 - Never commit lectures, teaching scripts, datasets, raw messages, credentials, trained models or executed notebook outputs.
