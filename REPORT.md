@@ -2,7 +2,7 @@
 
 ## Section 1 — phishing email triage
 
-The notebook implements a complete learning experiment using the versioned public corpus in DATASET_SELECTION.md, loaded directly in Colab. The question is whether message text supports analyst triage while limiting false alerts. Real-data results are pending execution.
+The notebook implements a complete learning experiment using the versioned public corpus in DATASET_SELECTION.md, loaded directly in Colab. The question is whether message text supports analyst triage while limiting false alerts. The saved Colab run has been reviewed below.
 
 ### Preparation
 
@@ -22,7 +22,17 @@ Validation selects thresholds and the winner by recall under an illustrative 1% 
 
 Evaluate the untouched test once. Record accuracy, precision, recall, F1, AP, ROC-AUC, FPR, false alerts per 1,000 legitimate messages, confusion counts and runtime. Plot PR/ROC curves and the winner's confusion matrix. Retain the validation-selected winner. Report group-bootstrap intervals and aggregate errors by length/class.
 
-**Real-data outcomes: pending Colab execution.** Do not assume deep learning wins. Further development after examining test results needs a new independent holdout.
+### Saved Colab run review
+
+The user-saved run in commit [538b8cc](https://github.com/chamarairesh1982/ml-cybersecurity/commit/538b8cc) contains successful execution outputs. These are historical observations from that runtime, not a locally repeated real-data experiment. The saved source omitted the validation-selection and final-test cells, with neural source carrying their old outputs. Those cells have been restored from the original notebook. Current outputs are cleared to avoid associating historical results with repaired source.
+
+Validation selected the word+character linear SVM at threshold -0.074392: recall 99.13%, FPR 0.9494%, AP 0.998727. On the 2,531-row test partition it found 929 of 938 phishing-labelled emails and falsely flagged 14 of 1,593 safe-labelled emails (9 misses). Test precision was 98.52%, recall 99.04%, F1 98.78%, AP 0.998188 and FPR 0.8788%, or 8.79 false alerts per 1,000 safe-labelled emails. The group-bootstrap 95% FPR interval was approximately 0.4567%–1.3834%; the point meets the 1% budget but does not guarantee a population rate below 1%.
+
+The six classical searches totalled approximately 43.0 minutes. The two word+character searches accounted for 30.9 minutes (72%). The two neural fits totalled approximately 49 seconds, excluding preprocessing and other stages. These times do not establish total notebook duration or separately measure feature extraction and solver time.
+
+The repair caches fold-specific training transforms across classifier settings and compatible model families, and builds bootstrap group membership with stable sorting. Models, search grids, partitions and validation policy are preserved. Synthetic checks verify cached/uncached equivalence and bootstrap equivalence. A fresh Colab run is needed to measure real-data speedup; cached training matrices consume temporary runtime disk space. Classical searches still use CPU in an accelerator runtime.
+
+Further model development after examining these test results needs a new independent holdout.
 
 Label quality, historical/source artefacts, approximate grouping, truncation and absent time/source metadata limit generalisation. Neural seed variation does not measure deployment shift. Independent data and operational monitoring would be required for practical use.
 
