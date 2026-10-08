@@ -17,6 +17,8 @@ This is an independent learning project. Keep personal details, student numbers,
 - Select public data based on the task, provenance, label quality, licence and evaluation feasibility. Verify official sources before changing dataset choice.
 - Load public data directly in the Colab runtime using a pinned version and integrity check when available. Do not download datasets to the local machine.
 - Never invent benchmark results or claim a universally best model. Select using declared validation criteria and report limitations.
+- Section 2's published test has been inspected. Keep version 2 development-only by default; optional benchmark replay is historical, never a fresh holdout. Do not claim improved independent scores until new compatible external data are verified.
+- Keep Section 2 fitting, model-selection and policy-calibration groups disjoint. Freeze its model before policy calibration; no refitting afterward. Distinguish group-risk assumptions and calibration evidence from row FPR and deployment guarantees.
 - Audit schema, missing/empty data, duplicate/conflicting labels and class imbalance. Keep audit counts.
 - Group related samples before splitting. Fit vectorisers, scaling, vocabulary, feature selection and resampling only inside training boundaries or CV folds.
 - Use the same partitions for all candidates. Tune within training CV; use validation for thresholds/model decisions; evaluate the untouched test once.

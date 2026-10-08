@@ -5,7 +5,7 @@ Independent learning experiments in four self-contained Google Colab notebooks. 
 | Folder | Notebook | Status |
 |---|---|---|
 | section1_phishing | [Open Section 1 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section1_phishing/section1_phishing.ipynb) | Saved run reviewed; repaired source and feature caching |
-| section2_intrusion | [Open Section 2 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section2_intrusion/section2_intrusion.ipynb) | Full experiment; run for results |
+| section2_intrusion | [Open Section 2 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section2_intrusion/section2_intrusion.ipynb) | Version 2 development workflow; historical replay optional |
 | section3_anomaly | section3_anomaly.ipynb | Placeholder |
 | section4_ransomware | section4_ransomware.ipynb | Placeholder |
 
@@ -22,9 +22,11 @@ The saved run and runtime findings are recorded in REPORT.md. The latest noteboo
 
 ## Run Section 2
 
-Open its Colab link and run cells in order. The notebook fetches pinned UNSW-NB15 training parquet into Colab memory, reserves grouped validation data, and compares a prior baseline, logistic regression, random forest, histogram gradient boosting, a core-feature ablation and two neural seeds. The published test partition is fetched only after validation choices freeze. Duplicate and core-feature-group overlaps are excluded and counted; results describe that novelty subset rather than the unmodified published benchmark.
+Open the latest Colab link in a fresh runtime and run cells in order. Version 2 fetches the same pinned UNSW-NB15 training parquet only in Colab. Fixed, disjoint related-feature groups divide fitting data, model-selection data and alert-policy calibration data. Compare prior, logistic regression, regularised forest, Extra Trees, regularised histogram boosting, a core-feature ablation and two neural seeds. Grouped CV uses a declared stability heuristic; neural early stopping follows macro-F1. CPU worker threads are bounded to reduce nested parallelism.
 
-Review macro/per-class metrics, multiclass confusion and PR curves, the separate attack-alert threshold, false-alert workload, group-bootstrap intervals and protocol error slices. Aggregate evidence stays in `/content/section2_results`. No local dataset download or upload is needed. The first cell installs download/parquet extras. Major classical models use CPU; the numerical neural model supports TensorFlow GPU/TPU strategies, pending actual accelerator verification.
+Review class support, train/CV gaps, model-selection per-class metrics and policy calibration. Freeze the category winner before calibrating alerts. The conservative threshold targets Normal-group false-alert risk under independent, exchangeable group assumptions; it cannot guarantee deployment or row-level FPR. Too few calibration groups produce an explicitly labelled reject-all policy. Covariate diagnostics use fitting-only quantile bins. Aggregate evidence stays in `/content/section2_results/v2_development`.
+
+The published test set has already been inspected. `RUN_HISTORICAL_TEST=False` is the default, so Run all completes development evidence without fetching it. Optional replay reports historical metrics, confusion/PR curves, group-bootstrap intervals and errors on a deduplicated novelty subset. It is not a new independent test or proof of improvement. Independent final validation requires a genuinely new compatible capture. No local dataset download or upload is needed. Major classical models use CPU; the numerical neural model supports TensorFlow GPU/TPU strategies, pending verification of this version in Colab.
 
 All runnable Python lives in notebook cells. No standalone .py file or generator is required. The first cell installs small extras; Colab provides major scientific libraries. Do not indiscriminately upgrade TensorFlow on a managed accelerator runtime. Clear outputs before committing.
 

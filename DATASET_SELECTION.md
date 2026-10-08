@@ -28,6 +28,7 @@ Use the [original UNSW-NB15 description and research-use terms](https://research
 - Provider metadata reports 175,341 training and 82,332 test rows before notebook cleaning. Schema contains flow measurements, protocol/service/state, attack category and binary label; targets and identity fields never enter predictors.
 - Original terms grant academic research use and request attribution, while commercial use requires author agreement. The mirror's broader CC-BY claim is not assumed to override those terms. No dataset is redistributed here.
 - The mirror claims temporal separation, but reliable timestamps/session IDs are absent from the selected artifact. We describe a publisher benchmark split, not independently verified chronological evaluation.
-- Final metrics use deduplicated test rows whose rounded core-feature groups are absent from all development data. Report counts and acknowledge this different evaluation population.
+- Historical replay metrics use deduplicated test rows whose rounded core-feature groups are absent from all development data. Report counts and acknowledge this different evaluation population.
+- The published test was inspected in the saved Section 2 run. Version 2 disables its replay by default and labels any replay non-independent. No new compatible external holdout has been selected or verified; revised model performance is still unmeasured on independent data.
 
 All real-data fetching occurs in Colab runtime memory. Local checks use synthetic in-memory fixtures only. Sections 3–4 remain undecided.
