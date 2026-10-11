@@ -43,4 +43,18 @@ Use [NSL-KDD's original provider description and citation terms](https://www.unb
 - Deterministic duplicate/contradiction filtering, rounded-feature groups and complete-group reference sampling change the population. Test overlap filtering uses all cleaned development-pool rows, not only selected Normal fitting rows.
 - Historical selected attacks, offline host/content counters, absent reliable timestamps/session IDs, imperfect Normal coverage and approximate group independence limit modern operational inference. Attack-name novelty is not verified zero-day detection.
 
-All real-data fetching occurs in Colab runtime memory. Local checks use synthetic in-memory fixtures only. Section 4 remains undecided.
+All real-data fetching occurs in Colab runtime memory. Local checks use synthetic in-memory fixtures only.
+
+## Section 4 public data
+
+Use [UCI BitcoinHeist Ransomware Address](https://archive.ics.uci.edu/dataset/526/bitcoinheistransomwareaddressdataset), [DOI 10.24432/C5BG8V](https://doi.org/10.24432/C5BG8V), licensed CC BY 4.0. Attribute the [original BitcoinHeist research](https://arxiv.org/abs/1906.07852). This repository redistributes no dataset.
+
+- Official runtime source: `https://archive.ics.uci.edu/static/public/526/bitcoinheistransomwareaddressdataset.zip`; archive member `BitcoinHeistData.csv`. The download endpoint was checked with HEAD only, without downloading data locally.
+- Provider reports 2,916,697 observations, approximately 225 MB CSV / 111 MB archive, spanning daily graph windows in 2009–2018.
+- Measurements: length, weight, count, looped, neighbors and income in satoshis. Address/year/day and ransomware-family label are metadata, never predictors. Three fixed row-local ratios are compared against a core-feature ablation.
+- No independently verified publisher digest was found. The notebook records runtime archive SHA-256, verifies ZIP CRC through reads, enforces a size envelope and validates schema. The URL is fixed but not an immutable content version. Optional externally verified SHA-256 can enforce a repeated artifact.
+- White means not known to be ransomware, not verified benign. Background sampling was capped at 1,000 addresses per day; edges below 0.3 BTC were filtered. Precision and background-alert metrics cannot establish live-population accuracy.
+- Retrospective labels have unknown historical availability. Earliest eligible address observations, discarded ambiguous/invalid first observations and exclusions of any previously observed address change the population. Address disjointness does not establish actor/campaign independence.
+- Fixed chronological development and test boundaries prevent random time mixing. One archive includes the test period, but test rows are not retained/profiled until model and policy are frozen. Weekly block intervals still rely on approximate block independence and representativeness.
+
+The experiment screens historical payment addresses after each daily feature window closes; it does not detect or prevent endpoint ransomware encryption. Real-data metrics and accelerator behaviour require a fresh Colab run. After test inspection, further tuning needs a new independent holdout.

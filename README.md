@@ -1,13 +1,13 @@
 # ml-cybersecurity
 
-Independent learning experiments in four self-contained Google Colab notebooks. Sections 1–3 are implemented; Section 4 reserves future work. Section 3 is the current scenario.
+Independent learning experiments in four self-contained Google Colab notebooks. All four sections are implemented. Section 4 is the current scenario.
 
 | Folder | Notebook | Status |
 |---|---|---|
 | section1_phishing | [Open Section 1 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section1_phishing/section1_phishing.ipynb) | Saved run reviewed; repaired source and feature caching |
 | section2_intrusion | [Open Section 2 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section2_intrusion/section2_intrusion.ipynb) | Version 2 development workflow; historical replay optional |
 | section3_anomaly | [Open Section 3 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section3_anomaly/section3_anomaly.ipynb) | Normal-only anomaly learning; real-data run pending |
-| section4_ransomware | section4_ransomware.ipynb | Placeholder |
+| section4_ransomware | [Open Section 4 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section4_ransomware/section4_ransomware.ipynb) | Chronological ransomware-payment screening; real-data run pending |
 
 ## Run Section 1
 
@@ -37,6 +37,14 @@ Tune PCA variance retention, K-means cluster count and Isolation Forest subsampl
 Labels choose the benchmark winner by selection AP, so the whole experiment is label-assisted despite Normal-only detector fitting. Freeze the model, calibrate a conservative Normal-group alert threshold on a separate partition, then fetch/evaluate the publisher test once. Related-feature overlap filtering changes the evaluation population. Review false alerts, missed attacks, per-attack/name-novelty errors, group-bootstrap intervals and timing; no modern deployment or zero-day claim is implied. Aggregate evidence stays in `/content/section3_results`. Source identity uses a pinned mirror commit, Git blob/byte checks and a recorded runtime SHA-256; no real dataset is downloaded locally.
 
 All runnable Python lives in notebook cells. No standalone .py file or generator is required. The first cell installs small extras; Colab provides major scientific libraries. Do not indiscriminately upgrade TensorFlow on a managed accelerator runtime. Clear outputs in edited notebooks before committing; preserve unrelated user-saved runs.
+
+## Run Section 4
+
+Open its latest Colab link in a fresh runtime and run cells in order. UCI BitcoinHeist supports ransomware-linked payment/address screening using daily graph measurements; it is not an endpoint file-encryption dataset. The notebook downloads the public archive into Colab memory, records its SHA-256, checks ZIP/schema/calendar integrity and cleans only the opened period. The source has no independently verified publisher checksum, so the recorded digest is reproducibility evidence rather than an immutable authenticated pin.
+
+Retain first-observation addresses and exclude recurring addresses across chronological boundaries: fitting through 2015, neural stopping in early 2016, selection in late 2016, policy calibration in early 2017 and a final test from July 2017 through 2018. Invalid or ambiguous first observations do not promote addresses into later cohorts. Forward CV validates on 2014 and 2015 with freshly fitted preprocessing. A uniform, label-blind 120,000-address fitting cap and 40,000-address CV validation cap bound cost; later evaluation partitions remain uncapped.
+
+Compare prior, logistic regression, forest, histogram boosting, a core-feature ablation, a fixed ensemble and two optional neural seeds. Select by AP, freeze the winner, then set a threshold targeting at most 1% observed alerts on policy background. White labels are incomplete and background sampling is biased; this is an empirical sample budget, not a deployment guarantee. Evaluate the chronological test once and inspect PR/confusion plots, ranking and alert metrics, weekly-block uncertainty, family/time errors, drift and runtime. Aggregate evidence and partition fingerprints stay in `/content/section4_results`; addresses and models are not exported. No dataset is fetched locally. CPU neural logic is checked; actual Colab GPU/TPU execution and real-data outcomes remain pending.
 
 ## Learning process
 
