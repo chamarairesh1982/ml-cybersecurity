@@ -1,5 +1,40 @@
 # Cybersecurity ML: evidence journal
 
+## Latest saved-run review and development revisions
+
+Reviewed the latest GitHub state at [b6908f4](https://github.com/chamarairesh1982/ml-cybersecurity/commit/b6908f4), including the user-saved Section 3 run from [aab37bf](https://github.com/chamarairesh1982/ml-cybersecurity/commit/aab37bf) and Section 4 run. All four saved notebooks reached their evidence-export cells without a saved exception. The saved neural logs reported one-replica MirroredStrategy; updated accelerator behaviour remains unverified.
+
+### Historical evidence
+
+| Scenario | Saved winner | Evidence | Main finding |
+|---|---|---|---|
+| 1 | word/character linear SVM | Inspected original corpus test | AP 0.998188; recall 99.0405%; precision 98.5154%; FPR 0.8788%; 929 TP / 9 FN / 14 FP / 1,579 TN |
+| 2 | Extra Trees | Model selection and policy only | Selection macro-F1 0.756701; policy attack recall 70.9618%; Normal row FPR 0.8388%; no new independent test |
+| 3 | Isolation Forest, 1,024 subsamples | Inspected filtered publisher test | AP 0.959093; recall 57.5178%; precision 98.5294%; Normal FPR 1.0981%; 7,035 TP / 5,196 FN / 105 FP / 9,457 TN |
+| 4 | Core-feature histogram boosting | Inspected chronological address test | AP 0.0008534 versus prevalence 0.0006116; recall 0.3322%; precision 0.0233%; 1 TP / 300 FN / 4,293 FP / 487,525 TN |
+
+These are saved-run measurements, not scores from revised notebooks. Different populations and tasks make direct cross-scenario metric comparison inappropriate.
+
+Section 3's selection AP was 0.988107 and policy recall 80.1998%, falling to 57.5178% on the historical test. The group/row false-alert rate exceeded the illustrative 1% target. Recall was zero for several labelled attacks, including back and mailbomb; known-name recall was 60.85% versus 49.74% for names absent from development. This supports a distribution/generalisation limitation, not permission to retune on the test. Original PCA retained only two components at 95% variance; near-zero numeric interquantile scales can make a few dimensions dominate reconstruction.
+
+Section 4 retained 3,465 fitting positives in its full early-period pool but only 257 after uniform sampling. The training sample contained only two ransomware families. Forward validation AP was near background prevalence, with large forest/boosting fit-to-validation gaps. Selection AP 0.069739 did not translate to useful policy alerts: only 10 of 3,021 policy positives were caught. Test accuracy 99.0667% hid near-total failure to catch ransomware; predicting background for every test address would achieve about 99.9388% accuracy. Most late periods had no labelled positives, and the labelled test was dominated by Cerber. These historical results do not support an operational detector.
+
+Section 1's saved result is strong within this corpus, but approximate content grouping and unverified source/campaign independence still limit external inference. Section 2's Extra Trees training macro-F1 0.973328 versus CV 0.744426 signals a substantial fitting gap; selection macro-F1 is 0.756701. Rare Worms selection support was only 23. The revised workflow should be assessed through independent development boundaries, not a claim of perfect category recognition.
+
+### Concrete fixes
+
+- All revisions default to development-only evidence, with explicit optional historical replay. Repartitioning or repeatedly running an inspected corpus does not produce a fresh holdout.
+- Section 1 v2 uses disjoint grouped fitting, neural stopping, selection and policy cohorts. Neural stopping follows stopping PR-AUC; only the frozen winner receives independent background-only policy calibration. Scores are canonical float64 and threshold inputs are validated.
+- Section 2 v3 reserves grouped stopping data inside the original fitting partition for every candidate. Neural stopping macro-F1 no longer uses selection labels. Convert probabilities to float64 before subtracting Normal probability and compare the nextafter threshold at the same precision. The saved neural calibration had 79 group alerts against a declared rank of 78, consistent with float32 scalar comparison rounding; rank-count assertions now catch violations.
+- Section 3 v2 fits median-centred scales with a training-only max(interquantile range, half standard deviation), using unit scale for constants. This limits amplification by tiny nonzero ranges without clipping tail values. Cloned Normal-only CV encoders apply the same rule. Historical publisher testing is disabled by default.
+- Section 4 v2 keeps all positives inside each fitting boundary, samples only background and uses explicit inclusion/population balancing weights once. The prior reconstructs the original fitting prevalence. Fit before July 2016 to include more recent development families; use separate July–August stopping, September–October selection and November–December policy cohorts. Complete forward validation replaces rare-positive-dropping validation caps. Publish fitting family coverage and policy family metrics.
+
+Current revisions retain source provenance and use only development partitions for fitting/model/policy choices. No modern compatible independent holdout has been established, so no revised independent score or universally best model is claimed. Earlier sections below describe the original implementations and their historical evidence.
+
+### Revision verification
+
+All four revised notebooks pass nbformat and Python/IPython syntax checks, with cleared outputs, stable IDs and Python kernels. End-to-end synthetic development runs pass for every notebook, including every classical family, both CPU neural seeds, separate stopping/selection/policy boundaries and strict aggregate-only JSON export. Synthetic historical replays pass for all four, including repeat guards and optional outputs. The revised batched autoencoder scoring also passes a numerical CPU rerun. Focused assertions verify float64 probability arithmetic/tie ranks, all-positive fitting retention, inverse-inclusion population totals and balanced loss mass. No real dataset was downloaded locally, and no revised real-data or accelerator result is claimed.
+
 ## Section 1 — phishing email triage
 
 The notebook implements a complete learning experiment using the versioned public corpus in DATASET_SELECTION.md, loaded directly in Colab. The question is whether message text supports analyst triage while limiting false alerts. The saved Colab run has been reviewed below.

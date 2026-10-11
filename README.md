@@ -1,57 +1,41 @@
 # ml-cybersecurity
 
-Independent learning experiments in four self-contained Google Colab notebooks. All four sections are implemented. Section 4 is the current scenario.
+Four independent learning experiments, each implemented entirely in a Google Colab Jupyter notebook. No standalone Python scripts, lectures, personal details, datasets or trained models are committed.
 
-| Folder | Notebook | Status |
+| Section | Open notebook | Current revision |
 |---|---|---|
-| section1_phishing | [Open Section 1 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section1_phishing/section1_phishing.ipynb) | Saved run reviewed; repaired source and feature caching |
-| section2_intrusion | [Open Section 2 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section2_intrusion/section2_intrusion.ipynb) | Version 2 development workflow; historical replay optional |
-| section3_anomaly | [Open Section 3 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section3_anomaly/section3_anomaly.ipynb) | Normal-only anomaly learning; real-data run pending |
-| section4_ransomware | [Open Section 4 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section4_ransomware/section4_ransomware.ipynb) | Chronological ransomware-payment screening; real-data run pending |
+| 1 — phishing | [Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section1_phishing/section1_phishing.ipynb) | v2: grouped fitting, stopping, selection and policy |
+| 2 — intrusion | [Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section2_intrusion/section2_intrusion.ipynb) | v3: independent neural stopping and precise score thresholds |
+| 3 — anomaly | [Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section3_anomaly/section3_anomaly.ipynb) | v2: Normal-only scaling safeguard and development workflow |
+| 4 — ransomware payments | [Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section4_ransomware/section4_ransomware.ipynb) | v2: recent chronological fitting with all rare positives retained |
 
-## Run Section 1
+## Run
 
-1. Open the Colab link above.
-2. Choose a CPU, GPU or TPU runtime. Classical models use CPU; the numerical TensorFlow comparator supports accelerator strategies.
-3. Run cells in order, or use **Runtime → Run all** for the declared full experiment.
-4. Colab fetches the pinned public CSV into runtime memory and verifies SHA-256. No local dataset download, manual upload, Drive mount or credential is needed.
-5. Review audit/cleaning counts, duplicate grouping, training EDA, grouped CV, neural curves, validation selection, final test, uncertainty and aggregate errors.
-6. Aggregate evidence is written to `/content/section1_results` in Colab. Nothing is published to GitHub by the notebook.
+Open the latest GitHub notebook in a fresh Colab runtime and choose **Runtime → Run all**. Public data loads in Colab; no upload, Drive mount or credentials are needed. The first code/configuration cells control optional neural comparators and runtime cost. Classical models run on CPU; numerical TensorFlow models support GPU/TPU strategies. Small numerical tasks may not benefit from a TPU. Updated accelerator execution still requires verification in your Colab runtime.
 
-The saved run and runtime findings are recorded in REPORT.md. The latest notebook restores missing validation/test cells and caches training feature extraction in `/content/section1_feature_cache`. Open the latest GitHub version in a fresh Colab runtime rather than using an older open copy. Caching consumes temporary disk space; set `CACHE_FEATURES=False` to disable it. A fresh run is needed to measure speedup.
+Each notebook now defaults to `RUN_HISTORICAL_TEST=False`. The original test experiments have already been inspected, so default runs produce development evidence. Set the flag to True only for an explicitly historical replay. Repeated runs, additional seeds and newly partitioned rows from an inspected corpus do not establish independent improvement. A new compatible holdout is needed for final validation.
 
-## Run Section 2
+Aggregate reports remain inside Colab:
 
-Open the latest Colab link in a fresh runtime and run cells in order. Version 2 fetches the same pinned UNSW-NB15 training parquet only in Colab. Fixed, disjoint related-feature groups divide fitting data, model-selection data and alert-policy calibration data. Compare prior, logistic regression, regularised forest, Extra Trees, regularised histogram boosting, a core-feature ablation and two neural seeds. Grouped CV uses a declared stability heuristic; neural early stopping follows macro-F1. CPU worker threads are bounded to reduce nested parallelism.
+- Section 1: `/content/section1_results/v2_development`
+- Section 2: `/content/section2_results/v3_development`
+- Section 3: `/content/section3_results/v2_development`
+- Section 4: `/content/section4_results/v2_development`
 
-Review class support, train/CV gaps, model-selection per-class metrics and policy calibration. Freeze the category winner before calibrating alerts. The conservative threshold targets Normal-group false-alert risk under independent, exchangeable group assumptions; it cannot guarantee deployment or row-level FPR. Too few calibration groups produce an explicitly labelled reject-all policy. Covariate diagnostics use fitting-only quantile bins. Aggregate evidence stays in `/content/section2_results/v2_development`.
+The notebooks do not publish results or models to GitHub. Record actual evidence before drawing conclusions; no model is claimed to be universally best.
 
-The published test set has already been inspected. `RUN_HISTORICAL_TEST=False` is the default, so Run all completes development evidence without fetching it. Optional replay reports historical metrics, confusion/PR curves, group-bootstrap intervals and errors on a deduplicated novelty subset. It is not a new independent test or proof of improvement. Independent final validation requires a genuinely new compatible capture. No local dataset download or upload is needed. Major classical models use CPU; the numerical neural model supports TensorFlow GPU/TPU strategies, pending verification of this version in Colab.
+## What changed after saved-run review
 
-## Run Section 3
+Section 1's historical text classifier performed well, but validation previously served several roles. The revised experiment separates grouped fitting, neural stopping, model selection and independent background-policy calibration. Classical TF-IDF caches remain fold-specific; stemming and structural models provide ablations.
 
-Open the Colab link in a fresh runtime and run cells in order. The notebook fetches pinned NSL-KDD training data into Colab memory, audits labels/numeric values/duplicates, and forms disjoint rounded-feature groups. Normal-only reference fitting and stopping data remain separate from mixed model-selection and policy-calibration data. All imputation, log scaling, robust scaling and encoding fit only on the declared capped Normal reference.
+Section 2's saved category winner was Extra Trees, with development macro-F1 about 0.757. The revised experiment reserves grouped neural stopping data for every candidate. Neural probability outputs now convert to float64 before attack-score subtraction, preventing nextafter thresholds from rounding onto tied scores. Policy group-count assertions check the declared rank.
 
-Tune PCA variance retention, K-means cluster count and Isolation Forest subsampling in three grouped training-only folds, fitting fresh Normal-only encoding/detectors in each fold. Compare the chosen classical families with robust distance, a fixed Normal-rank ensemble and two optional autoencoder seeds on the separate selection partition. LOF is optional and disabled by default because scoring can be expensive. Classical methods use CPU; numerical autoencoder strategies support GPU/TPU, pending actual Colab verification. The common Normal reference cap is 12,000 rows sampled as complete groups within each fitting boundary, with exclusions reported.
+Section 3's saved Isolation Forest had historical AP about 0.959, recall 57.5% and Normal false-alert rate 1.10%. Some attack types were almost entirely missed. A training-only floor on robust numerical scale prevents tiny interquantile ranges from dominating reconstruction models. Normal-only fitting remains label-assisted for model selection. Anomaly scores are not attack probabilities.
 
-Labels choose the benchmark winner by selection AP, so the whole experiment is label-assisted despite Normal-only detector fitting. Freeze the model, calibrate a conservative Normal-group alert threshold on a separate partition, then fetch/evaluate the publisher test once. Related-feature overlap filtering changes the evaluation population. Review false alerts, missed attacks, per-attack/name-novelty errors, group-bootstrap intervals and timing; no modern deployment or zero-day claim is implied. Aggregate evidence stays in `/content/section3_results`. Source identity uses a pinned mirror commit, Git blob/byte checks and a recorded runtime SHA-256; no real dataset is downloaded locally.
+Section 4's previous model caught only 1 of 301 labelled ransomware addresses in historical testing despite 99.1% accuracy. Its random fitting cap retained only 257 of 3,465 positives. The revision keeps all training positives, samples background with explicit inclusion/class-balancing weights, and fits on data before July 2016. Separate stopping, selection and policy cohorts cover July–August, September–October and November–December 2016. Complete forward validation covers 2014, 2015 and early 2016. The sampled background labels are incomplete; this is historical payment screening after a daily graph window closes.
 
-All runnable Python lives in notebook cells. No standalone .py file or generator is required. The first cell installs small extras; Colab provides major scientific libraries. Do not indiscriminately upgrade TensorFlow on a managed accelerator runtime. Clear outputs in edited notebooks before committing; preserve unrelated user-saved runs.
+## Evidence and sources
 
-## Run Section 4
+[REPORT.md](REPORT.md) records the saved findings, changes and verification limits. [DATASET_SELECTION.md](DATASET_SELECTION.md) records public sources, licences, fingerprints and label limitations. [AGENTS.md](AGENTS.md) preserves the notebook-only structure and evaluation rules.
 
-Open its latest Colab link in a fresh runtime and run cells in order. UCI BitcoinHeist supports ransomware-linked payment/address screening using daily graph measurements; it is not an endpoint file-encryption dataset. The notebook downloads the public archive into Colab memory, records its SHA-256, checks ZIP/schema/calendar integrity and cleans only the opened period. The source has no independently verified publisher checksum, so the recorded digest is reproducibility evidence rather than an immutable authenticated pin.
-
-Retain first-observation addresses and exclude recurring addresses across chronological boundaries: fitting through 2015, neural stopping in early 2016, selection in late 2016, policy calibration in early 2017 and a final test from July 2017 through 2018. Invalid or ambiguous first observations do not promote addresses into later cohorts. Forward CV validates on 2014 and 2015 with freshly fitted preprocessing. A uniform, label-blind 120,000-address fitting cap and 40,000-address CV validation cap bound cost; later evaluation partitions remain uncapped.
-
-Compare prior, logistic regression, forest, histogram boosting, a core-feature ablation, a fixed ensemble and two optional neural seeds. Select by AP, freeze the winner, then set a threshold targeting at most 1% observed alerts on policy background. White labels are incomplete and background sampling is biased; this is an empirical sample budget, not a deployment guarantee. Evaluate the chronological test once and inspect PR/confusion plots, ranking and alert metrics, weekly-block uncertainty, family/time errors, drift and runtime. Aggregate evidence and partition fingerprints stay in `/content/section4_results`; addresses and models are not exported. No dataset is fetched locally. CPU neural logic is checked; actual Colab GPU/TPU execution and real-data outcomes remain pending.
-
-## Learning process
-
-The experiments apply lecture concepts: foundations, preparation/EDA, feature engineering, supervised learning, neural networks, ensemble comparison, evaluation and NLP. Section 3 adds clustering, dimensionality reduction and novelty detection.
-
-Compare prior, word/character TF-IDF linear models, a text-cleaning ablation, structural models, a random forest and an embedding-based neural model. Select on validation recall under a declared false-positive budget and evaluate the untouched test once. Complexity must earn its cost.
-
-Use the [public Phishing Email Dataset mirror](https://huggingface.co/datasets/zefang-liu/phishing-email-dataset), attributed to the [original provider](https://www.kaggle.com/datasets/subhajournal/phishingemails). See DATASET_SELECTION.md for provenance and limitations. Section 1 historical scores are attributed to the saved Colab run in REPORT.md; notebook outputs remain cleared. Accelerator execution of updated code must be verified in the actual Colab runtime.
-
-AGENTS.md preserves the notebook-only structure. REPORT.md is an evidence journal. Project files omit personal and school identifiers. Public account ownership remains visible. Lectures, teaching scripts, datasets, credentials, models and raw message outputs are excluded.
+Local checks use synthetic fixtures only. Updated real-data performance has not been measured. Clear outputs in edited notebooks before publishing; preserve unrelated user-saved runs. Public GitHub account ownership remains visible.

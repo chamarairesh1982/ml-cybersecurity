@@ -5,7 +5,7 @@ This is an independent learning project. Keep personal details, student numbers,
 ## Structure
 
 - Use four scenario folders, each with one self-contained Google Colab Jupyter notebook.
-- All four scenarios are implemented. Section 4 is the current scenario; preserve unrelated user-saved notebooks and results when working on it.
+- All four scenarios are implemented. Review scope may cover all four. Preserve the aggregate findings from saved runs in REPORT.md before clearing edited notebook outputs.
 - Put all runnable Python inside notebook code cells. Do not create, commit or depend on standalone .py files or notebook generators.
 - Edit notebooks directly and preserve nbformat validity, stable cell IDs, a Python 3 kernelspec and clear teaching markdown.
 - Never commit lectures, teaching scripts, datasets, raw messages, credentials, trained models or executed notebook outputs.
@@ -17,6 +17,10 @@ This is an independent learning project. Keep personal details, student numbers,
 - Select public data based on the task, provenance, label quality, licence and evaluation feasibility. Verify official sources before changing dataset choice.
 - Load public data directly in the Colab runtime using a pinned version and integrity check when available. Do not download datasets to the local machine.
 - Never invent benchmark results or claim a universally best model. Select using declared validation criteria and report limitations.
+- All four original test experiments have been inspected. Revisions default to development-only evidence with RUN_HISTORICAL_TEST=False. Repartitioning inspected corpus rows or rerunning seeds does not create a fresh holdout; any optional replay must be labelled historical.
+- Keep neural stopping, model selection and alert policy partitions disjoint. No candidate may use policy results for reselection or refit after calibration.
+- Convert scores/probabilities to float64 before probability subtraction and order-statistic comparisons; assert tie-conservative empirical counts satisfy their declared rank. NumPy float32 comparisons can otherwise round nextafter thresholds back onto score ties.
+- Section 4 fitting keeps every positive inside each training boundary and uniformly samples background. Combine inverse inclusion with original-population class balancing exactly once; the prior uses inverse inclusion only. Forward validation and later development cohorts remain uncapped. Never feed sampling weights into predictor columns.
 - Section 2's published test has been inspected. Keep version 2 development-only by default; optional benchmark replay is historical, never a fresh holdout. Do not claim improved independent scores until new compatible external data are verified.
 - Section 3 uses Normal-only novelty fitting with labelled benchmark model selection, separate Normal-group policy calibration and one publisher test evaluation. Do not describe it as fully label-free or equate unusual traffic with attacks. After inspecting its test, subsequent development needs a new independent holdout.
 - Section 4 screens ransomware-linked Bitcoin payment addresses using retrospective corpus labels, not endpoint encryption behaviour. Treat white as incompletely labelled background. Preserve chronological fitting/stopping/selection/policy/test boundaries and first-observation address exclusion, including dirty earlier records with usable dates. Never use identity/calendar/family fields as predictors. Freeze before empirical background-policy calibration; its sample alert budget is not a deployment guarantee. After test inspection, require a new holdout for further tuning.

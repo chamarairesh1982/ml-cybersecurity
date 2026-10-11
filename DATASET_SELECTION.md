@@ -57,4 +57,12 @@ Use [UCI BitcoinHeist Ransomware Address](https://archive.ics.uci.edu/dataset/52
 - Retrospective labels have unknown historical availability. Earliest eligible address observations, discarded ambiguous/invalid first observations and exclusions of any previously observed address change the population. Address disjointness does not establish actor/campaign independence.
 - Fixed chronological development and test boundaries prevent random time mixing. One archive includes the test period, but test rows are not retained/profiled until model and policy are frozen. Weekly block intervals still rely on approximate block independence and representativeness.
 
-The experiment screens historical payment addresses after each daily feature window closes; it does not detect or prevent endpoint ransomware encryption. Real-data metrics and accelerator behaviour require a fresh Colab run. After test inspection, further tuning needs a new independent holdout.
+The experiment screens historical payment addresses after each daily feature window closes; it does not detect or prevent endpoint ransomware encryption. After test inspection, further tuning needs a new independent holdout.
+
+## Saved-run revision status
+
+The user-saved runs now include inspected Section 3 and 4 tests. All four revised notebooks default to development-only evidence; optional corpus replay is historical. Existing population/label limitations remain in force. Revised scores have not yet been measured on real data.
+
+Section 1 v2 divides related content groups into fitting/stopping/selection/policy/inspected-reserve partitions. The new reserve is still inspected-corpus data, not a fresh test. Section 2 v3 carves grouped neural stopping data from the original fitting partition and keeps selection/policy disjoint. Section 3 v2 changes training-only numeric scaling with a dispersion floor; source artifacts and Normal-only eligibility remain unchanged.
+
+Section 4 v2 uses fitting before July 2016, stopping in July–August, selection in September–October and policy calibration in November–December 2016. Keep every fitting positive and uniformly sample background within a 220,000-address cap. Recorded weights combine inverse inclusion and original-population class balancing once; the prior uses inclusion weights alone. Three complete forward holdouts cover 2014, 2015 and early 2016. The optional 2017–2018 replay overlaps previously inspected evidence and is explicitly non-independent. These development changes cannot remove retrospective-label ambiguity or establish modern payment-detection performance.
