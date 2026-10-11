@@ -1,5 +1,16 @@
 # Cybersecurity ML: evidence journal
 
+## Follow-up review: cleaning, uncertainty and reproducibility
+
+Reviewed all four development notebooks against the lecture concepts and their current implementation. Outputs and execution counts are cleared. No new real-data benchmark score is claimed.
+
+- Section 1 now repeats duplicate/conflicting-label removal after text truncation, so identical model-visible messages cannot retain contradictory labels. Both cleaning passes have separate audit counts.
+- Sections 1–3 report per-metric defined bootstrap counts and flag degenerate intervals. No-alert precision replicates in Sections 1 and 3 are undefined rather than zero. A zero-width resampling interval cannot bound errors absent from the observed sample.
+- Section 4 exports candidate estimator parameters, features, neural architecture and stopping settings, effective accelerator batch size, seed/epoch/batch settings and fixed ensemble composition. Exported evidence remains aggregate; no addresses or fitted weights are included. Removed unused neural class-weight calculation; existing explicit sample weights remain authoritative.
+- Section 4 boosting had retained estimator-level class balancing alongside explicitly balanced sample weights. Disabled that extra balancing in both boosting candidates to enforce the declared single-weighting rule; the prior continues to use inclusion weights only.
+
+Focused synthetic checks verify capped-input cleaning, undefined/constant and nonconstant bootstrap cases, and strict JSON configuration export for classical and neural candidates. Section 4 checks also verify positive retention, reconstruction of original prevalence by the weighted prior, equal class weight totals, and successful weighted fits for every boosting configuration. All four notebooks pass format/syntax validation and contain no saved outputs. Real-data training and accelerator execution remain for Colab; these checks do not establish improved generalisation.
+
 ## Latest saved-run review and development revisions
 
 Reviewed the latest GitHub state at [b6908f4](https://github.com/chamarairesh1982/ml-cybersecurity/commit/b6908f4), including the user-saved Section 3 run from [aab37bf](https://github.com/chamarairesh1982/ml-cybersecurity/commit/aab37bf) and Section 4 run. All four saved notebooks reached their evidence-export cells without a saved exception. The saved neural logs reported one-replica MirroredStrategy; updated accelerator behaviour remains unverified.
