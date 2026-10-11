@@ -60,6 +60,22 @@ Notebook/schema/syntax checks and synthetic end-to-end tests exercise cleaning, 
 
 Historical synthetic attacks, label-dependent exclusions, approximate group independence, lack of timestamps/session IDs and source shift limit practical conclusions. Conservative calibration may sacrifice substantial recall and cannot correct population shift on its own.
 
-## Remaining scenarios
+## Section 3 — Normal-only network anomaly detection
 
-Sections 3 (anomaly) and 4 (ransomware) retain reserved notebooks. Implement them when requested; no implementation or results are claimed for them.
+The standalone Colab notebook uses a pinned NSL-KDD archival mirror, with original provider/paper attribution and explicit historical-benchmark limitations. Its security question is whether deviations from a trusted Normal reference support attack triage. Anomaly scores are not attack probabilities. No real-data results are claimed yet.
+
+Audit schema, labels, missing/invalid numerics and feature-identical binary-label conflicts. Deduplicate consistent features, record per-label retention and any duplicate groups with multiple attack names. For binary-consistent duplicates, the first representative supplies its attack name; attack-name analyses inherit that ambiguity. Difficulty and labels never enter predictors. Group four-significant-digit numeric features and categories before fixed development splits; these are feature proxies, not session/campaign ground truth.
+
+Fit imputation, log transforms, robust scaling and infrequent-category encoding only on Normal fitting references. Append Normal-reference unseen-category flags and audit coverage. Normal-only stopping data, mixed labelled model-selection data and separate policy data have disjoint groups. Sample complete fitting groups deterministically up to 12,000 rows for all candidates, report exclusions, and acknowledge possible loss of legitimate Normal modes.
+
+Tune PCA reconstruction at .80/.95 retained variance, MiniBatch K-means with 8/32 clusters and Isolation Forest at 256/1,024 subsamples in three training-only grouped folds. Each fold fits fresh Normal-only encoding and a capped Normal reference, then scores its mixed training-fold holdout. Mean AP minus fold standard deviation chooses a setting per family; this label-assisted stability heuristic is not a confidence bound. Normal stopping/selection/policy/test data are excluded from CV. Compare the chosen families with robust distance, a fixed Normal-rank ensemble and optional novelty-mode LOF. Silhouette measures Normal cluster geometry rather than attack correctness. Two optional autoencoders use Normal-only reconstruction targets, Huber loss, regularisation and Normal-only stopping; anomaly scoring uses declared MSE. Score directions increase with anomaly.
+
+Choose the benchmark model on labelled selection AP, then fitting cost. This is label-assisted model selection, despite one-class fitting. Freeze the winner before calibrating each predeclared detector on policy Normal-group maximum scores. Conservative binomial order-statistic thresholds target group risk only under independent/exchangeable scores; too little support causes explicit reject-all. They do not guarantee row FPR or deployment safety.
+
+Fetch the publisher test only after decisions freeze, claim it with a repeat guard, and exclude overlap with the entire cleaned development pool. Report the filtered population, class/attack support, AP/ROC-AUC, alert precision/recall/F1, confusion counts, row/group FPR, false-alert workload and fitting/inference cost. Preserve the frozen winner and compare reject-all. Report per-attack/protocol errors, name novelty relative to development labels and group-bootstrap intervals. Name novelty is not a zero-day claim. Export aggregate evidence and split/reference fingerprints in Colab without raw records or fitted models.
+
+**Real-data outcomes: pending Colab execution.** Synthetic end-to-end checks cover schema/integrity failures, cleaning exclusions, disjoint groups, Normal-only encoding, all classical candidates including LOF, calibration ranks/ties/fallback, overlap filtering, one-test guard, metrics, bootstrap and strict JSON exports. Numerical CPU checks cover both autoencoder seeds and batched reconstruction scores; actual GPU/TPU execution remains unverified. No real dataset was downloaded locally.
+
+## Remaining scenario
+
+Section 4 (ransomware) remains a reserved notebook. Implement it only when requested; no implementation or results are claimed.

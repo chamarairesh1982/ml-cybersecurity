@@ -31,4 +31,16 @@ Use the [original UNSW-NB15 description and research-use terms](https://research
 - Historical replay metrics use deduplicated test rows whose rounded core-feature groups are absent from all development data. Report counts and acknowledge this different evaluation population.
 - The published test was inspected in the saved Section 2 run. Version 2 disables its replay by default and labels any replay non-independent. No new compatible external holdout has been selected or verified; revised model performance is still unmeasured on independent data.
 
-All real-data fetching occurs in Colab runtime memory. Local checks use synthetic in-memory fixtures only. Sections 3–4 remain undecided.
+## Section 3 public data
+
+Use [NSL-KDD's original provider description and citation terms](https://www.unb.ca/cic/datasets/nsl.html), attributed to M. Tavallaee, E. Bagheri, W. Lu and A. Ghorbani, *A Detailed Analysis of the KDD CUP 99 Data Set*, CISDA 2009. The provider permits use/redistribution with attribution but no longer supplies downloads. A [third-party archive](https://github.com/jmnwong/NSL-KDD-Dataset/tree/9d544d0eb9b87d7e2f43ff65733bdb644631d12f) reports restoration from the original site through the Wayback Machine.
+
+- Pinned mirror commit: `9d544d0eb9b87d7e2f43ff65733bdb644631d12f`.
+- `KDDTrain+.txt`: Git blob `20002897492adc110190a10509aa694f26f7f308`, 19,109,424 bytes.
+- `KDDTest+.txt`: Git blob `b30e89605285a5ccd8cf8fd38dba72906c20d3dd`, 3,441,513 bytes.
+- Commit, blob identities and sizes were verified through GitHub metadata without fetching actual data locally. Colab verifies the exact blob/byte identity and records SHA-256. Git SHA-1 identity does not establish adversarial collision resistance or independently prove provider authenticity.
+- Expect 41 predictors, attack name and difficulty. Exclude both metadata/target fields from modelling. Normal eligibility uses provider labels; labelled development AP chooses the benchmark model. This is Normal-only fitting with label-assisted selection.
+- Deterministic duplicate/contradiction filtering, rounded-feature groups and complete-group reference sampling change the population. Test overlap filtering uses all cleaned development-pool rows, not only selected Normal fitting rows.
+- Historical selected attacks, offline host/content counters, absent reliable timestamps/session IDs, imperfect Normal coverage and approximate group independence limit modern operational inference. Attack-name novelty is not verified zero-day detection.
+
+All real-data fetching occurs in Colab runtime memory. Local checks use synthetic in-memory fixtures only. Section 4 remains undecided.

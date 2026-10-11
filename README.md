@@ -1,12 +1,12 @@
 # ml-cybersecurity
 
-Independent learning experiments in four self-contained Google Colab notebooks. Sections 1 and 2 are implemented; Sections 3–4 reserve future work. Section 2 is the current scenario.
+Independent learning experiments in four self-contained Google Colab notebooks. Sections 1–3 are implemented; Section 4 reserves future work. Section 3 is the current scenario.
 
 | Folder | Notebook | Status |
 |---|---|---|
 | section1_phishing | [Open Section 1 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section1_phishing/section1_phishing.ipynb) | Saved run reviewed; repaired source and feature caching |
 | section2_intrusion | [Open Section 2 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section2_intrusion/section2_intrusion.ipynb) | Version 2 development workflow; historical replay optional |
-| section3_anomaly | section3_anomaly.ipynb | Placeholder |
+| section3_anomaly | [Open Section 3 in Colab](https://colab.research.google.com/github/chamarairesh1982/ml-cybersecurity/blob/main/section3_anomaly/section3_anomaly.ipynb) | Normal-only anomaly learning; real-data run pending |
 | section4_ransomware | section4_ransomware.ipynb | Placeholder |
 
 ## Run Section 1
@@ -28,11 +28,19 @@ Review class support, train/CV gaps, model-selection per-class metrics and polic
 
 The published test set has already been inspected. `RUN_HISTORICAL_TEST=False` is the default, so Run all completes development evidence without fetching it. Optional replay reports historical metrics, confusion/PR curves, group-bootstrap intervals and errors on a deduplicated novelty subset. It is not a new independent test or proof of improvement. Independent final validation requires a genuinely new compatible capture. No local dataset download or upload is needed. Major classical models use CPU; the numerical neural model supports TensorFlow GPU/TPU strategies, pending verification of this version in Colab.
 
-All runnable Python lives in notebook cells. No standalone .py file or generator is required. The first cell installs small extras; Colab provides major scientific libraries. Do not indiscriminately upgrade TensorFlow on a managed accelerator runtime. Clear outputs before committing.
+## Run Section 3
+
+Open the Colab link in a fresh runtime and run cells in order. The notebook fetches pinned NSL-KDD training data into Colab memory, audits labels/numeric values/duplicates, and forms disjoint rounded-feature groups. Normal-only reference fitting and stopping data remain separate from mixed model-selection and policy-calibration data. All imputation, log scaling, robust scaling and encoding fit only on the declared capped Normal reference.
+
+Tune PCA variance retention, K-means cluster count and Isolation Forest subsampling in three grouped training-only folds, fitting fresh Normal-only encoding/detectors in each fold. Compare the chosen classical families with robust distance, a fixed Normal-rank ensemble and two optional autoencoder seeds on the separate selection partition. LOF is optional and disabled by default because scoring can be expensive. Classical methods use CPU; numerical autoencoder strategies support GPU/TPU, pending actual Colab verification. The common Normal reference cap is 12,000 rows sampled as complete groups within each fitting boundary, with exclusions reported.
+
+Labels choose the benchmark winner by selection AP, so the whole experiment is label-assisted despite Normal-only detector fitting. Freeze the model, calibrate a conservative Normal-group alert threshold on a separate partition, then fetch/evaluate the publisher test once. Related-feature overlap filtering changes the evaluation population. Review false alerts, missed attacks, per-attack/name-novelty errors, group-bootstrap intervals and timing; no modern deployment or zero-day claim is implied. Aggregate evidence stays in `/content/section3_results`. Source identity uses a pinned mirror commit, Git blob/byte checks and a recorded runtime SHA-256; no real dataset is downloaded locally.
+
+All runnable Python lives in notebook cells. No standalone .py file or generator is required. The first cell installs small extras; Colab provides major scientific libraries. Do not indiscriminately upgrade TensorFlow on a managed accelerator runtime. Clear outputs in edited notebooks before committing; preserve unrelated user-saved runs.
 
 ## Learning process
 
-The experiment applies lecture concepts: foundations, preparation/EDA, feature engineering, supervised learning, neural networks, ensemble comparison, evaluation and NLP. Unsupervised modelling is reserved mainly for Section 3.
+The experiments apply lecture concepts: foundations, preparation/EDA, feature engineering, supervised learning, neural networks, ensemble comparison, evaluation and NLP. Section 3 adds clustering, dimensionality reduction and novelty detection.
 
 Compare prior, word/character TF-IDF linear models, a text-cleaning ablation, structural models, a random forest and an embedding-based neural model. Select on validation recall under a declared false-positive budget and evaluate the untouched test once. Complexity must earn its cost.
 
